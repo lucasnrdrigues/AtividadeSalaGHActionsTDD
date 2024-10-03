@@ -8,7 +8,11 @@ on:
 jobs:
   ci:
     name: Integração Contínua
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]  # Especifica Ubuntu e Windows
+        node: [14, 16, 18]  # Opcional: se você quiser testar várias versões do Node.js
 
     steps:
       - name: Checkout
@@ -17,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '21'
+          node-version: ${{ matrix.node }}  # Usa a versão do Node.js da matriz
 
       - name: Install dependencies
         run: npm install
